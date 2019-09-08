@@ -1,13 +1,13 @@
 ##############################################################################
 # * HashiCorp Beginner's Guide to Using Terraform on Azure
-# 
+#
 # This Terraform configuration will create the following:
 # Resource group with a virtual network and subnet
 # An Ubuntu Linux server running Apache
 
 ##############################################################################
-# First we'll create a resource group. In Azure every resource belongs to a 
-# resource group. Think of it as a container to hold all your resources. 
+# First we'll create a resource group. In Azure every resource belongs to a
+# resource group. Think of it as a container to hold all your resources.
 resource "azurerm_resource_group" "tf_azure_guide" {
   name     = "${var.resource_group}"
   location = "${var.location}"
@@ -26,8 +26,8 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = "${azurerm_resource_group.tf_azure_guide.name}"
 }
 
-# Next we'll build a subnet to run our VMs in. These variables can be defined 
-# via environment variables, a config file, or command line flags. Default 
+# Next we'll build a subnet to run our VMs in. These variables can be defined
+# via environment variables, a config file, or command line flags. Default
 # values will be used if the user does not override them. You can find all the
 # default variables in the variables.tf file. You can customize this demo by
 # making a copy of the terraform.tfvars.example file.
@@ -43,8 +43,8 @@ resource "azurerm_subnet" "subnet" {
 #
 # Now that we have a network, we'll deploy an Ubuntu 16.04 Linux server.
 # An Azure Virtual Machine has several components. In this example we'll build
-# a security group, a network interface, a public ip address, a storage 
-# account and finally the VM itself. Terraform handles all the dependencies 
+# a security group, a network interface, a public ip address, a storage
+# account and finally the VM itself. Terraform handles all the dependencies
 # automatically, and each resource is named with user-defined variables.
 
 # Security group to allow inbound access on port 80 (http) and 22 (ssh)
@@ -78,7 +78,7 @@ resource "azurerm_network_security_group" "tf-guide-sg" {
   }
 }
 
-# A network interface. This is required by the azurerm_virtual_machine 
+# A network interface. This is required by the azurerm_virtual_machine
 # resource. Terraform will let you know if you're missing a dependency.
 resource "azurerm_network_interface" "tf-guide-nic" {
   name                      = "${var.prefix}tf-guide-nic"
@@ -94,20 +94,22 @@ resource "azurerm_network_interface" "tf-guide-nic" {
   }
 }
 
-# Every Azure Virtual Machine comes with a private IP address. You can also 
-# optionally add a public IP address for Internet-facing applications and 
+# Every Azure Virtual Machine comes with a private IP address. You can also
+# optionally add a public IP address for Internet-facing applications and
 # demo environments like this one.
 resource "azurerm_public_ip" "tf-guide-pip" {
-  name                         = "${var.prefix}-ip"
-  location                     = "${var.location}"
-  resource_group_name          = "${azurerm_resource_group.tf_azure_guide.name}"
-  public_ip_address_allocation = "Dynamic"
-  domain_name_label            = "${var.hostname}"
+  name                = "${var.prefix}-ip"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.tf_azure_guide.name}"
+
+  #public_ip_address_allocation = "Dynamic"
+  allocation_method = "Dynamic"
+  domain_name_label = "${var.hostname}"
 }
 
 # And finally we build our virtual machine. This is a standard Ubuntu instance.
-# We use the shell provisioner to run a Bash script that configures Apache for 
-# the demo environment. Terraform supports several different types of 
+# We use the shell provisioner to run a Bash script that configures Apache for
+# the demo environment. Terraform supports several different types of
 # provisioners including Bash, Powershell and Chef.
 resource "azurerm_virtual_machine" "site" {
   name                = "${var.hostname}-site"
@@ -173,8 +175,9 @@ resource "azurerm_virtual_machine" "site" {
 
 ##############################################################################
 # * Azure MySQL Database
-# Terraform can build any type of infrastructure, not just virtual machines. 
+# Terraform can build any type of infrastructure, not just virtual machines.
 # Uncomment the code below to add a MySQL server to your resource group.
+
 
 # resource "azurerm_mysql_server" "mysql" {
 #   name                = "${var.mysql_hostname}"
@@ -182,11 +185,13 @@ resource "azurerm_virtual_machine" "site" {
 #   resource_group_name = "${azurerm_resource_group.tf_azure_guide.name}"
 #   ssl_enforcement     = "Disabled"
 
+
 #   sku {
 #     name     = "MYSQLB50"
 #     capacity = 50
 #     tier     = "Basic"
 #   }
+
 
 #   administrator_login          = "mysqladmin"
 #   administrator_login_password = "Everything-is-bananas-010101"
@@ -194,6 +199,7 @@ resource "azurerm_virtual_machine" "site" {
 #   storage_mb                   = "51200"
 #   ssl_enforcement              = "Disabled"
 # }
+
 
 # # This is a sample database that we'll populate with the MySQL sample data
 # # set provided here: https://github.com/datacharmer/test_db. With Terraform,
@@ -208,8 +214,9 @@ resource "azurerm_virtual_machine" "site" {
 #   collation           = "utf8_unicode_ci"
 # }
 
+
 # # This firewall rule allows database connections from anywhere and is suited
-# # for demo environments. Don't do this in production. 
+# # for demo environments. Don't do this in production.
 # resource "azurerm_mysql_firewall_rule" "demo" {
 #   name                = "tf-guide-demo"
 #   resource_group_name = "${azurerm_resource_group.tf_azure_guide.name}"
@@ -217,3 +224,4 @@ resource "azurerm_virtual_machine" "site" {
 #   start_ip_address    = "0.0.0.0"
 #   end_ip_address      = "0.0.0.0"
 # }
+
