@@ -2,8 +2,7 @@
 # Variables File
 #
 # Here is where we store the default values for all the variables used in our
-# Terraform code. If you create a variable with no default, the user will be
-# prompted to enter it (or define it via config file or command line flags.)
+# Terraform code.
 
 variable "resource_group" {
   description = "The name of your Azure Resource Group."
@@ -12,12 +11,12 @@ variable "resource_group" {
 
 variable "prefix" {
   description = "This prefix will be included in the name of some resources."
-  default     = "tfguide"
+  default     = "tfazu"
 }
 
 variable "hostname" {
   description = "Virtual machine hostname. Used for local hostname, DNS, and storage-related names."
-  default     = "catapp"
+  default     = "cat-app"
 }
 
 variable "location" {
