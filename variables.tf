@@ -5,6 +5,7 @@
 # Terraform code. If you create a variable with no default, the user will be
 # prompted to enter it (or define it via config file or command line flags.)
 
+
 variable "resource_group" {
   description = "The name of your Azure Resource Group."
   default     = "Terraform-Azure-Beginners"
@@ -32,12 +33,12 @@ variable "virtual_network_name" {
 
 variable "address_space" {
   description = "The address space that is used by the virtual network. You can supply more than one address space. Changing this forces a new resource to be created."
-  default     = "10.0.0.0/16"
+  default     = "10.0.0.0/22"
 }
 
 variable "subnet_prefix" {
   description = "The address prefix to use for the subnet."
-  default     = "10.0.10.0/24"
+  default     = "10.0.1.0/25"
 }
 
 variable "storage_account_tier" {

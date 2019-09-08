@@ -2,17 +2,12 @@
 # * HashiCorp Beginner's Guide to Using Terraform on Azure
 # 
 # This Terraform configuration will create the following:
-#
 # Resource group with a virtual network and subnet
 # An Ubuntu Linux server running Apache
 
 ##############################################################################
-# * Shared infrastructure resources
-
 # First we'll create a resource group. In Azure every resource belongs to a 
 # resource group. Think of it as a container to hold all your resources. 
-# You can find a complete list of Azure resources supported by Terraform here:
-# https://www.terraform.io/docs/providers/azurerm/
 resource "azurerm_resource_group" "tf_azure_guide" {
   name     = "${var.resource_group}"
   location = "${var.location}"
@@ -178,12 +173,7 @@ resource "azurerm_virtual_machine" "site" {
 
 ##############################################################################
 # * Azure MySQL Database
-
 # Terraform can build any type of infrastructure, not just virtual machines. 
-# Azure offers managed MySQL database servers and a whole host of other 
-# resources. Each resource is documented with all the available settings:
-# https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html
-
 # Uncomment the code below to add a MySQL server to your resource group.
 
 # resource "azurerm_mysql_server" "mysql" {
